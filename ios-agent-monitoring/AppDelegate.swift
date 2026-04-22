@@ -19,6 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !SocketManager.shared.deviceId.isEmpty {
             LocationManager.shared.startTracking()
             SocketManager.shared.connect()
+            
+            // Push initial metrics immediately
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.pushMetrics()
+            }
         }
         
         // Start periodic metrics update

@@ -16,8 +16,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     override init() {
         super.init()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        manager.distanceFilter = 100 // Update every 100 meters
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.distanceFilter = 5 // Update every 5 meters for testing
         
         // Safety check to prevent crash if background capability is missing
         if let backgroundModes = Bundle.main.object(forInfoDictionaryKey: "UIBackgroundModes") as? [String],
