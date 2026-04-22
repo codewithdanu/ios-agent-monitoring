@@ -63,6 +63,11 @@ class SocketManager: NSObject, ObservableObject {
     
     // Send a Socket.io event (Packet Type 42)
     func emit(event: String, data: [String: Any]) {
+        if !isConnected {
+            print("SocketManager: Not connected. Attempting to connect before emitting \(event)")
+            connect()
+        }
+        
         let packet = [event, data] as [Any]
         if let jsonData = try? JSONSerialization.data(withJSONObject: packet),
            let jsonString = String(data: jsonData, encoding: .utf8) {

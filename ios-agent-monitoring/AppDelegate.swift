@@ -39,6 +39,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SocketManager.shared.emit(event: "agent:metrics", data: data)
     }
 
-    // MARK: UISceneSession Lifecycle (For modern iOS apps)
-    // In a production app, you'd also handle SceneDelegate.
-}
+    private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("AppDelegate: App entered background. Starting background task.")
+        
+        // Request extra time to keep the socket alive
+        backgroundTask = application.beginBackgroundTask(withName: "SocketKeepAlive") {
+            print("AppDelegate: Background task expired.")
+            self.endBackgroundTask()
+        }
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("AppDelegate: App returning to foreground.")
+        endBackgroundTask()
+        
+        // Re-verify connection
+        if !SocketManager.shared.isConnected {
+            SocketManager.shared.connect()
+        }
+    }
+    
+    private func endBackgroundTask() {
+        if backgroundTask != .invalid {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
+        }
+    }
+
+    // MARK: UISceneSession Lifecycle
