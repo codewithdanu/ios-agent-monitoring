@@ -67,5 +67,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             backgroundTask = .invalid
         }
     }
-
-    // MARK: UISceneSession Lifecycle
+}
