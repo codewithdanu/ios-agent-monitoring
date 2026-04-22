@@ -151,8 +151,20 @@ class SocketManager: NSObject, ObservableObject {
         }
     }
     
+    var onConnected: (() -> Void)?
+
     private func handleIncomingMessage(_ jsonString: String) {
         // Handle incoming events from server
-        print("SocketManager: Event received: \(jsonString)")
+        // Format: ["event", {data}]
+        guard let data = jsonString.data(using: .utf8),
+              let array = try? JSONSerialization.jsonObject(with: data) as? [Any],
+              let eventName = array.first as? String else { return }
+        
+        print("SocketManager: Event received: \(eventName)")
+        
+        if eventName == "agent:registered" {
+            print("SocketManager: Registration confirmed by server.")
+            onConnected?()
+        }
     }
 }

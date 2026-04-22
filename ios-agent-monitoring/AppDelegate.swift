@@ -17,13 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Start tracking and connection if deviceId is already set
         if !SocketManager.shared.deviceId.isEmpty {
-            LocationManager.shared.startTracking()
-            SocketManager.shared.connect()
-            
-            // Push initial metrics immediately
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.pushMetrics()
+            SocketManager.shared.onConnected = { [weak self] in
+                print("AppDelegate: Connection verified, pushing initial telemetry.")
+                self?.pushMetrics()
+                LocationManager.shared.startTracking()
             }
+            SocketManager.shared.connect()
         }
         
         // Start periodic metrics update
