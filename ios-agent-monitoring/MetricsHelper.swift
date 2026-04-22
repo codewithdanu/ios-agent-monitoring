@@ -14,6 +14,9 @@ class MetricsHelper {
         return [
             "battery_percent": Int(device.batteryLevel * 100),
             "battery_state": getBatteryStateString(device.batteryState),
+            "cpu_percent": 0.0, // Hard to get accurately, set to 0
+            "memory_used_mb": 0,  // Hard to get accurately, set to 0
+            "memory_total_mb": Int(ProcessInfo.processInfo.physicalMemory / (1024 * 1024)),
             "disk_used_gb": storage.used,
             "disk_total_gb": storage.total,
             "model": device.model,

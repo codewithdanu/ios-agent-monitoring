@@ -79,11 +79,11 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
             "deviceId": SocketManager.shared.deviceId,
             "latitude": location.coordinate.latitude,
             "longitude": location.coordinate.longitude,
-            "accuracy": location.horizontalAccuracy,
+            "accuracy_meters": location.horizontalAccuracy,
             "altitude": location.altitude,
-            "timestamp": Int64(location.timestamp.timeIntervalSince1970 * 1000)
+            "recorded_at": ISO8601DateFormatter().string(from: location.timestamp)
         ]
         
-        SocketManager.shared.emit(event: "LOCATION_UPDATE", data: data)
+        SocketManager.shared.emit(event: "agent:location", data: data)
     }
 }

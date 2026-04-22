@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var data = metrics
         data["deviceId"] = SocketManager.shared.deviceId
         
-        SocketManager.shared.emit(event: "METRICS_UPDATE", data: data)
+        SocketManager.shared.emit(event: "agent:metrics", data: data)
     }
 
     // MARK: UISceneSession Lifecycle (For modern iOS apps)

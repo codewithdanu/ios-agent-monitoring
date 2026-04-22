@@ -55,10 +55,10 @@ class SocketManager: NSObject, ObservableObject {
             "deviceId": deviceId,
             "deviceToken": deviceToken,
             "deviceType": "MOBILE",
-            "os": "iOS"
+            "os": "IOS" // Ensure OS is exactly 'IOS' for dashboard filtering
         ]
         
-        emit(event: "REGISTER", data: registration)
+        emit(event: "agent:register", data: registration)
     }
     
     // Send a Socket.io event (Packet Type 42)
